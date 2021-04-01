@@ -334,7 +334,9 @@ class MainViewController: UIViewController {
             ThemeManager.shared.refreshSystemTheme()
         }
 
-        updateScrollViewInsets()
+        DispatchQueue.main.async {
+            self.updateScrollViewInsets()
+        }
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
