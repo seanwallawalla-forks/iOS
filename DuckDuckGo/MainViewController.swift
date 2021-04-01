@@ -74,6 +74,16 @@ class MainViewController: UIViewController {
             containerViewTop.constant = allowContentUnderflow ? contentUnderflow : 0
         }
     }
+
+    var scrollViewInsets: UIEdgeInsets {
+        let percent = omniBar.alpha
+        let frame = self.omniBar.convert(self.omniBar.frame, to: containerView)
+        let topOffset = frame.maxY
+        let bottomOffset = self.toolbarHeight + (percent < 1 ? 0 : self.view.safeAreaInsets.bottom)
+        let insets = UIEdgeInsets(top: topOffset, left: 0, bottom: bottomOffset, right: 0)
+        print("***", #function, insets)
+        return insets
+    }
     
     var contentUnderflow: CGFloat {
         return 3 + (allowContentUnderflow ? -customNavigationBar.frame.size.height : 0)
@@ -180,23 +190,6 @@ class MainViewController: UIViewController {
                                                selector: #selector(keyboardWillChangeFrame),
                                                name: UIResponder.keyboardWillChangeFrameNotification,
                                                object: nil)
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-    }
-
-    /// This is only really for iOS 10 devices that don't properly support the change frame approach.
-    @objc private func keyboardWillHide(_ notification: Notification) {
-
-        guard findInPageBottomLayoutConstraint.constant > 0,
-            let userInfo = notification.userInfo else {
-            return
-        }
-
-        findInPageBottomLayoutConstraint.constant = 0
-        animateForKeyboard(userInfo: userInfo, y: view.frame.height)
     }
 
     /// Based on https://stackoverflow.com/a/46117073/73479
@@ -209,15 +202,13 @@ class MainViewController: UIViewController {
         }
 
         var height = keyboardFrame.size.height
-
         let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
         let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.bottom)
         let intersection = safeAreaFrame.intersection(keyboardFrameInView)
         height = intersection.height
 
         findInPageBottomLayoutConstraint.constant = height
-        currentTab?.webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: height, right: 0)
-        
+
         if let suggestionsTray = suggestionTrayController {
             let suggestionsFrameInView = suggestionsTray.view.convert(suggestionsTray.contentFrame, to: view)
             
@@ -225,7 +216,7 @@ class MainViewController: UIViewController {
             if overflow > 0 {
                 suggestionTrayController?.applyContentInset(UIEdgeInsets(top: 0, left: 0, bottom: overflow, right: 0))
             } else {
-                suggestionTrayController?.applyContentInset(.zero)
+                suggestionTrayController?.applyContentInset(UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0))
             }
         }
 
@@ -242,6 +233,11 @@ class MainViewController: UIViewController {
         UIView.animate(withDuration: duration, delay: 0, options: animationCurve, animations: {
             self.findInPageView.frame = CGRect(x: 0, y: y - frame.height, width: frame.width, height: frame.height)
         }, completion: nil)
+
+        print("***", y)
+        let topOffset = self.progressView.frame.origin.y
+        let bottomOffset = y
+        self.currentTab?.webView.scrollView.contentInset = .init(top: topOffset, left: 0, bottom: bottomOffset, right: 0)
 
     }
 
@@ -336,6 +332,9 @@ class MainViewController: UIViewController {
             ThemeManager.shared.refreshSystemTheme()
         }
 
+        let insets = scrollViewInsets
+        homeController?.collectionView.contentInset = insets
+        currentTab?.webView.scrollView.contentInset = insets
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -430,6 +429,7 @@ class MainViewController: UIViewController {
         controller.delegate = self
 
         addToView(controller: controller)
+        homeController?.collectionView.contentInset = scrollViewInsets
 
         refreshControls()
     }
@@ -552,6 +552,7 @@ class MainViewController: UIViewController {
         currentTab?.chromeDelegate = nil
         addToView(controller: tab)
         tab.progressWorker.progressBar = progressView
+
         chromeManager.attach(to: tab.webView.scrollView)
         tab.chromeDelegate = self
     }
@@ -847,6 +848,8 @@ extension MainViewController: BrowserChromeDelegate {
             self.omniBar.alpha = percent
             self.tabsBar.alpha = percent
             self.toolbar.alpha = percent
+
+            self.currentTab?.webView.scrollView.contentInset = self.scrollViewInsets
         }
         
         if animated {

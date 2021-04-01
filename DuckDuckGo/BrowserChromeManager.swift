@@ -60,7 +60,7 @@ class BrowserChromeManager: NSObject, UIScrollViewDelegate {
         detach()
         
         scrollView.delegate = self
-        
+
         observation = scrollView.observe(\.contentSize, options: .new) { [weak self] scrollView, _ in
             self?.scrollViewDidResizeContent(scrollView)
         }
@@ -223,10 +223,6 @@ private class BarsAnimator {
         let ratio = calculateTransitionRatio(for: scrollView.contentOffset.y)
         delegate?.setBarsVisibility(1.0 - ratio, animated: false)
         transitionProgress = ratio
-        
-        var offset = scrollView.contentOffset
-        offset.y = transitionStartPosY
-        scrollView.contentOffset = offset
     }
     
     private func transitioningAndScrolling(in scrollView: UIScrollView) {
@@ -242,10 +238,6 @@ private class BarsAnimator {
         
         delegate?.setBarsVisibility(1.0 - ratio, animated: false)
         transitionProgress = ratio
-        
-        var offset = scrollView.contentOffset
-        offset.y = transitionStartPosY
-        scrollView.contentOffset = offset
     }
     
     private func hiddenAndScrolling(in scrollView: UIScrollView) {
