@@ -75,16 +75,6 @@ class MainViewController: UIViewController {
         }
     }
 
-    var scrollViewInsets: UIEdgeInsets {
-        let percent = omniBar.alpha
-        let frame = self.omniBar.convert(self.omniBar.frame, to: containerView)
-        let topOffset = frame.maxY
-        let bottomOffset = self.toolbarHeight + (percent < 1 ? 0 : self.view.safeAreaInsets.bottom)
-        let insets = UIEdgeInsets(top: topOffset, left: 0, bottom: bottomOffset, right: 0)
-        print("***", #function, insets)
-        return insets
-    }
-    
     var contentUnderflow: CGFloat {
         return 3 + (allowContentUnderflow ? -customNavigationBar.frame.size.height : 0)
     }
@@ -183,6 +173,18 @@ class MainViewController: UIViewController {
         let onboardingFlow = "DaxOnboarding"
 
         performSegue(withIdentifier: onboardingFlow, sender: self)
+    }
+
+    private func updateScrollViewInsets() {
+        let percent = omniBar.alpha
+        let frame = self.omniBar.convert(self.omniBar.frame, to: containerView)
+        let topOffset = frame.maxY
+        let bottomOffset = self.toolbarHeight + (percent < 1 ? 0 : self.view.safeAreaInsets.bottom)
+        let insets = UIEdgeInsets(top: topOffset, left: 0, bottom: bottomOffset, right: 0)
+        print("***", #function, insets)
+
+        homeController?.collectionView.contentInset = insets
+        currentTab?.webView.scrollView.contentInset = insets
     }
     
     private func registerForKeyboardNotifications() {
@@ -332,9 +334,7 @@ class MainViewController: UIViewController {
             ThemeManager.shared.refreshSystemTheme()
         }
 
-        let insets = scrollViewInsets
-        homeController?.collectionView.contentInset = insets
-        currentTab?.webView.scrollView.contentInset = insets
+        updateScrollViewInsets()
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -429,8 +429,8 @@ class MainViewController: UIViewController {
         controller.delegate = self
 
         addToView(controller: controller)
-        homeController?.collectionView.contentInset = scrollViewInsets
 
+        updateScrollViewInsets()
         refreshControls()
     }
 
@@ -849,7 +849,7 @@ extension MainViewController: BrowserChromeDelegate {
             self.tabsBar.alpha = percent
             self.toolbar.alpha = percent
 
-            self.currentTab?.webView.scrollView.contentInset = self.scrollViewInsets
+            self.updateScrollViewInsets()
         }
         
         if animated {
