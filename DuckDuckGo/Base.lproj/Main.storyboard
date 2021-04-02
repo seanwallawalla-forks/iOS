@@ -46,11 +46,11 @@
                                     <constraint firstItem="KGS-6D-8Qu" firstAttribute="centerY" secondItem="EJw-WC-cX3" secondAttribute="centerY" constant="-72" id="xSF-LC-mFj"/>
                                 </constraints>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ylj-oJ-fqD">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ylj-oJ-fqD" userLabel="Layout Assistant">
                                 <rect key="frame" x="0.0" y="96" width="414" height="717"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </containerView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mVb-eQ-5Gw" userLabel="New Container">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mVb-eQ-5Gw" userLabel="Container">
                                 <rect key="frame" x="0.0" y="5" width="414" height="896"/>
                             </view>
                             <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0vw-jR-X6Q" userLabel="Suggestion Tray">

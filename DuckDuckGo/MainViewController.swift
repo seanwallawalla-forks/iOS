@@ -185,6 +185,7 @@ class MainViewController: UIViewController {
 
         homeController?.collectionView.contentInset = insets
         currentTab?.webView.scrollView.contentInset = insets
+        currentTab?.webView.scrollView.scrollIndicatorInsets = insets
     }
     
     private func registerForKeyboardNotifications() {
