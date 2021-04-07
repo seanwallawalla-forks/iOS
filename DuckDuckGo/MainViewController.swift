@@ -175,19 +175,41 @@ class MainViewController: UIViewController {
         performSegue(withIdentifier: onboardingFlow, sender: self)
     }
 
+    private func updateWebViewObscuredInsets() {
+         // WKWebViewIOS doesn't calculate it's visible area correctly with non-default safe area insets
+         // - most apparent it web pages with fixed position elements, like Navbars -
+         // so we set "_obscuredInsets" directly. More info here:
+         // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/ios/WKWebViewIOS.mm#L1905
+         let obscuredInsets = self.view.safeAreaInsets
+        currentTab?.webView.setValue(obscuredInsets, forKey: "_obscuredInsets")
+
+         // We also have to set "_haveSetObscuredInsets" otherwise "_obscuredInsets" are ignored:
+         // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/ios/WKWebViewIOS.mm#L582
+        currentTab?.webView.setValue(true, forKey: "_haveSetObscuredInsets")
+     }
+
     private func updateScrollViewInsets() {
         let percent = omniBar.alpha
-        let frame = self.omniBar.convert(self.omniBar.frame, to: containerView)
-        let topOffset = frame.maxY
-        let bottomOffset = self.toolbarHeight + (percent < 1 ? 0 : self.view.safeAreaInsets.bottom)
+
+        let topOffset: CGFloat = statusBarBackground.frame.maxY
+        let bottomOffset: CGFloat = view.safeAreaInsets.bottom +
+            // statusBarBackground.frame.maxY +
+            (percent < 1 ? 0 : toolbarHeight)
+
         let insets = UIEdgeInsets(top: topOffset, left: 0, bottom: bottomOffset, right: 0)
-        print("***", #function, insets)
+        print("***", #function, insets, percent)
 
         homeController?.collectionView.contentInset = insets
+//        currentTab?.webView.frame.origin.y = topOffset
+//        currentTab?.webView.frame.size.height = view.frame.height - bottomOffset
+//
+//        currentTab?.webView.scrollView.layoutMargins = .init(top: 300, left: 0, bottom: 0, right: 0)
+
+        currentTab?.webView.scrollView.contentInsetAdjustmentBehavior = .never
         currentTab?.webView.scrollView.contentInset = insets
-        currentTab?.webView.scrollView.scrollIndicatorInsets = insets
+        currentTab?.webView.scrollView.contentInsetAdjustmentBehavior = .never//        currentTab?.webView.scrollView.scrollIndicatorInsets = insets
     }
-    
+
     private func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillChangeFrame),

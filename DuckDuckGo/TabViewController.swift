@@ -39,7 +39,7 @@ class TabViewController: UIViewController {
     @IBOutlet private(set) weak var errorInfoImage: UIImageView!
     @IBOutlet private(set) weak var errorHeader: UILabel!
     @IBOutlet private(set) weak var errorMessage: UILabel!
-    @IBOutlet weak var webViewContainer: UIView!
+    // @IBOutlet weak var webViewContainer: UIView!
     
     @IBOutlet var showBarsTapGestureRecogniser: UITapGestureRecognizer!
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
@@ -279,7 +279,7 @@ class TabViewController: UIViewController {
         instrumentation.willPrepareWebView()
         webView = WKWebView(frame: view.bounds, configuration: configuration)
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
+
         if #available(iOS 13, *) {
             webView.allowsLinkPreview = true
         } else {
@@ -294,7 +294,7 @@ class TabViewController: UIViewController {
         
         webView.navigationDelegate = self
         webView.uiDelegate = self
-        webViewContainer.addSubview(webView)
+        view.addSubview(webView)
 
         reloadUserScripts()
         updateContentMode()

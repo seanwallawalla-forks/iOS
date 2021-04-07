@@ -50,8 +50,8 @@
                                 <rect key="frame" x="0.0" y="96" width="414" height="717"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </containerView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mVb-eQ-5Gw" userLabel="Container">
-                                <rect key="frame" x="0.0" y="5" width="414" height="896"/>
+                            <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mVb-eQ-5Gw" userLabel="Container">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </view>
                             <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0vw-jR-X6Q" userLabel="Suggestion Tray">
                                 <rect key="frame" x="0.0" y="96" width="414" height="717"/>
@@ -285,11 +285,11 @@
                             <constraint firstItem="Ylj-oJ-fqD" firstAttribute="leading" secondItem="Vxt-xD-aBt" secondAttribute="leading" id="Piz-bL-YZd"/>
                             <constraint firstItem="agl-Nk-nUH" firstAttribute="leading" secondItem="uBn-Md-Q2c" secondAttribute="leading" id="Rbf-jU-TU8"/>
                             <constraint firstItem="uBn-Md-Q2c" firstAttribute="trailing" secondItem="agl-Nk-nUH" secondAttribute="trailing" id="T2S-tz-4gK"/>
-                            <constraint firstItem="mVb-eQ-5Gw" firstAttribute="centerX" secondItem="uBn-Md-Q2c" secondAttribute="centerX" id="U1X-NJ-ZXl"/>
+                            <constraint firstItem="mVb-eQ-5Gw" firstAttribute="centerX" secondItem="Vxt-xD-aBt" secondAttribute="centerX" id="U1X-NJ-ZXl"/>
                             <constraint firstItem="Krm-hA-s9u" firstAttribute="bottom" secondItem="uBn-Md-Q2c" secondAttribute="bottom" id="UsQ-i7-pjr"/>
                             <constraint firstItem="kFG-OX-YkL" firstAttribute="leading" secondItem="nQT-PV-ULm" secondAttribute="leading" id="W6d-u9-zZQ"/>
                             <constraint firstItem="0vw-jR-X6Q" firstAttribute="width" secondItem="Ylj-oJ-fqD" secondAttribute="width" id="a3J-xn-lh0"/>
-                            <constraint firstItem="mVb-eQ-5Gw" firstAttribute="centerY" secondItem="uBn-Md-Q2c" secondAttribute="centerY" id="b4H-5k-SUO"/>
+                            <constraint firstItem="mVb-eQ-5Gw" firstAttribute="centerY" secondItem="Vxt-xD-aBt" secondAttribute="centerY" id="b4H-5k-SUO"/>
                             <constraint firstItem="lJT-0B-l2J" firstAttribute="centerX" secondItem="uBn-Md-Q2c" secondAttribute="centerX" id="d7x-EX-84Q"/>
                             <constraint firstItem="0vw-jR-X6Q" firstAttribute="height" secondItem="Ylj-oJ-fqD" secondAttribute="height" id="dIa-8h-sOB"/>
                             <constraint firstItem="EJw-WC-cX3" firstAttribute="centerY" secondItem="Vxt-xD-aBt" secondAttribute="centerY" id="eOr-re-Jxe"/>
